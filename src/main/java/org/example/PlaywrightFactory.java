@@ -10,11 +10,12 @@ public class PlaywrightFactory {
     static Playwright playwright;
     static Browser browser;
     BrowserContext context;
-    Page page;
+    static Page page;
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+
     }
 
     @AfterAll
@@ -26,10 +27,14 @@ public class PlaywrightFactory {
     void createContextAndPage() {
         context = browser.newContext();
         page = context.newPage();
+        page.navigate("https://www.saucedemo.com/");
+        BaseMethods.login();
+
     }
 
     @AfterEach
     void closeContext() {
         context.close();
+
     }
 }
